@@ -18,7 +18,7 @@
             background-color: transparent;
             margin: 0;
             padding: 0;
-            width: 100%;
+            width: 100vw;
             height: 100vh;
             display: flex;
             justify-content: center;
@@ -26,16 +26,16 @@
             overflow: hidden;
         }
 
-        /* CONTAINER EXTERNO: Define o contexto de container para fontes responsivas */
+        /* CONTAINER EXTERNO: Borda Externa Clara + Força o aspecto 1:1 (Quadrado) */
         .calendar-container {
-            container-type: inline-size;
             background-color: #fff5f7; 
             border-radius: 20px;
             padding: 4px; 
             width: 100%;
             height: 100%;
-            max-width: 100%;
-            max-height: 100%;
+            max-width: 100vw;
+            max-height: 100vh;
+            aspect-ratio: 1 / 1; 
             box-shadow: 0 8px 16px -4px rgba(229, 115, 153, 0.15);
             position: relative;
             display: flex;
@@ -59,7 +59,7 @@
             overflow: hidden;
         }
 
-        /* Ícone de configurações super discreto para não quebrar o visual mini */
+        /* Ícone de configurações */
         .icon-menu {
             position: absolute;
             top: 8px;
@@ -75,7 +75,7 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            opacity: 0.2;
+            opacity: 0.15;
             transition: opacity 0.2s;
         }
 
@@ -87,7 +87,7 @@
 
         .icon-btn:hover { opacity: 1; }
 
-        /* Estrutura do Texto Ultra Adaptável */
+        /* Estrutura de Texto Responsiva Dinâmica Baseada em vmin */
         .date-card {
             display: flex;
             flex-direction: column;
@@ -98,30 +98,29 @@
             white-space: nowrap;
         }
 
-        /* Usando cqw (Container Query Width) para as fontes recalcularem baseadas no espaço do Notion */
         .date-year {
             font-family: "Sour Gummy", sans-serif;
-            font-size: clamp(10px, 8cqw, 18px);
+            font-size: clamp(10px, 6vmin, 18px);
             font-weight: 500;
             letter-spacing: 1px;
             margin: 0;
             color: #f3a0bb;
-            line-height: 1;
+            line-height: 1.1;
         }
 
         .date-month {
             font-family: "Gaegu", cursive;
-            font-size: clamp(14px, 12cqw, 28px);
+            font-size: clamp(13px, 9vmin, 26px);
             font-weight: 700;
             text-transform: lowercase;
             margin: 1px 0;
             color: #e57399;
-            line-height: 1;
+            line-height: 1.1;
         }
 
         .date-day {
             font-family: "Sour Gummy", sans-serif;
-            font-size: clamp(28px, 30cqw, 75px); 
+            font-size: clamp(26px, 24vmin, 70px); 
             font-weight: 800;
             line-height: 0.85;
             margin: 0;
@@ -248,6 +247,15 @@
                             <option value="'Mystery Quest', cursive">Mystery Quest</option>
                             <option value="'Flavors', cursive">Flavors</option>
                             <option value="'Cabin Sketch', cursive">Cabin Sketch</option>
+                            <option value="'Griffy', cursive">Griffy</option>
+                            <option value="'Bonbon', cursive">Bonbon</option>
+                            <option value="'Special Elite', monospace">Special Elite</option>
+                            <option value="'IM Fell DW Pica SC', serif">IM Fell DW Pica SC</option>
+                            <option value="'Rubik Glitch', system-ui">Rubik Glitch</option>
+                            <option value="'Rubik Burned', system-ui">Rubik Burned</option>
+                            <option value="'Jacquarda Bastarda 9 Charted', serif">Jacquarda Bastarda 9 Charted</option>
+                            <option value="'Jacquarda 12 Charted', serif">Jacquarda 12 Charted</option>
+                            <option value="'Jacquarda Bastarda 9', serif">Jacquarda Bastarda 9</option>
                             <option value="'Courier Prime', monospace">Courier Prime</option>
                             <option value="'Dancing Script', cursive">Dancing Script</option>
                             <option value="'Caveat', cursive">Caveat</option>
@@ -255,9 +263,10 @@
                         </select>
                     </div>
                     <div class="settings-label-block">
-                        <span>Ajuste Escala</span>
+                        <span>Multiplicador</span>
                         <select id="size-select" onchange="changeSize()">
-                            <option value="0.8">Compacto</option>
+                            <option value="0.7">Micro</option>
+                            <option value="0.85">Pequeno</option>
                             <option value="1.0" selected>Padrão</option>
                             <option value="1.2">Grande</option>
                         </select>
@@ -272,225 +281,4 @@
                         </div>
                         <div class="color-group">
                             <span class="color-label">Mês</span>
-                            <input type="color" id="month-color-input" value="#e57399" onchange="changeMonthColor(this.value)">
-                        </div>
-                        <div class="color-group">
-                            <span class="color-label">Ano</span>
-                            <input type="color" id="year-color-input" value="#f3a0bb" onchange="changeYearColor(this.value)">
-                        </div>
-                        <div class="color-group">
-                            <span class="color-label">Borda Int.</span>
-                            <input type="color" id="border-color-input" value="#e57399" onchange="changeBorderColor(this.value)">
-                        </div>
-                        <div class="color-group">
-                            <span class="color-label">Fundo</span>
-                            <input type="color" id="bg-color-input" value="#fff5f7" onchange="changeBgColor(this.value)">
-                        </div>
-                    </div>
-                </div>
-
-                <div class="settings-row" style="margin-top: 2px;">
-                    <div class="style-btn-group">
-                        <button class="style-btn" id="btn-bold" onclick="toggleBold()">B</button>
-                        <button class="style-btn" id="btn-italic" onclick="toggleItalic()">I</button>
-                        <button class="style-btn" id="btn-normal" onclick="setNormal()">N</button>
-                    </div>
-                    <button class="ok-btn" id="ok-btn-text" onclick="closePanel(event)">OK</button>
-                </div>
-            </div>
-
-        </div>
-    </div>
-    
-    <input type="text" id="copy-input">
-
-    <script>
-        const panel = document.getElementById('settings');
-        const mainContainer = document.getElementById('calendar-card');
-        const innerBg = document.getElementById('inner-bg');
-        const dateCard = document.getElementById('date-card-element');
-        
-        const yearOutput = document.getElementById('year-output');
-        const monthOutput = document.getElementById('month-output');
-        const dayOutput = document.getElementById('day-output');
-
-        const fontSelect = document.getElementById('font-select');
-        const sizeSelect = document.getElementById('size-select');
-        
-        const dayColorInput = document.getElementById('day-color-input');
-        const monthColorInput = document.getElementById('month-color-input');
-        const yearColorInput = document.getElementById('year-color-input');
-        const borderColorInput = document.getElementById('border-color-input');
-        const bgColorInput = document.getElementById('bg-color-input');
-        const okBtnText = document.getElementById('ok-btn-text');
-
-        let isBold = false;
-        let isItalic = false; 
-
-        function updateCurrentDate() {
-            const hoje = new Date();
-            yearOutput.innerText = hoje.getFullYear();
-            const meses = ["janeiro", "fevereiro", "março", "abril", "maio", "junho", "julho", "agosto", "setembro", "outubro", "novembro", "dezembro"];
-            monthOutput.innerText = meses[hoje.getMonth()];
-            dayOutput.innerText = hoje.getDate();
-        }
-
-        function loadUrlSettings() {
-            updateCurrentDate();
-            const params = new URLSearchParams(window.location.search);
-            
-            if (params.has('fnt')) {
-                const fontVal = params.get('fnt');
-                if(fontVal === 'original') {
-                    setOriginalFonts();
-                } else {
-                    dateCard.style.fontFamily = fontVal;
-                    yearOutput.style.fontFamily = fontVal;
-                    monthOutput.style.fontFamily = fontVal;
-                    dayOutput.style.fontFamily = fontVal;
-                }
-                fontSelect.value = fontVal;
-            } else {
-                setOriginalFonts();
-            }
-            
-            if (params.has('sz')) {
-                sizeSelect.value = params.get('sz');
-                applySizes();
-            }
-            
-            if (params.has('cDay')) dayOutput.style.color = params.get('cDay');
-            if (params.has('cMon')) monthOutput.style.color = params.get('cMon');
-            if (params.has('cYr')) yearOutput.style.color = params.get('cYr');
-            if (params.has('brd')) innerBg.style.borderColor = params.get('brd');
-            if (params.has('bg')) {
-                mainContainer.style.backgroundColor = params.get('bg');
-                innerBg.style.backgroundColor = params.get('bg');
-                panel.style.backgroundColor = params.get('bg');
-            }
-            
-            if (params.has('bld')) {
-                isBold = params.get('bld') === 'true';
-                dateCard.style.fontWeight = isBold ? 'bold' : 'normal';
-            }
-            if (params.has('itl')) {
-                isItalic = params.get('itl') === 'true';
-                dateCard.style.fontStyle = isItalic ? 'italic' : 'normal';
-            }
-
-            dayColorInput.value = rgbToHex(dayOutput.style.color) || "#e57399";
-            monthColorInput.value = rgbToHex(monthOutput.style.color) || "#e57399";
-            yearColorInput.value = rgbToHex(yearOutput.style.color) || "#f3a0bb";
-            borderColorInput.value = rgbToHex(innerBg.style.borderColor) || "#e57399";
-            bgColorInput.value = rgbToHex(innerBg.style.backgroundColor) || "#fff5f7";
-            
-            document.getElementById('btn-bold').classList.toggle('active', isBold);
-            document.getElementById('btn-italic').classList.toggle('active', isItalic);
-        }
-
-        function setOriginalFonts() {
-            dateCard.style.fontFamily = "inherit";
-            yearOutput.style.fontFamily = '"Sour Gummy", sans-serif';
-            monthOutput.style.fontFamily = '"Gaegu", cursive';
-            dayOutput.style.fontFamily = '"Sour Gummy", sans-serif';
-        }
-
-        function applySizes() {
-            const factor = parseFloat(sizeSelect.value);
-            yearOutput.style.fontSize = `calc(clamp(10px, 8cqw, 18px) * ${factor})`;
-            monthOutput.style.fontSize = `calc(clamp(14px, 12cqw, 28px) * ${factor})`;
-            dayOutput.style.fontSize = `calc(clamp(28px, 30cqw, 75px) * ${factor})`;
-        }
-
-        function generateAndCopyLink() {
-            const baseUrl = window.location.protocol + '//' + window.location.host + window.location.pathname;
-            const params = new URLSearchParams();
-            
-            params.set('fnt', fontSelect.value);
-            params.set('sz', sizeSelect.value);
-            params.set('cDay', dayColorInput.value);
-            params.set('cMon', monthColorInput.value);
-            params.set('cYr', yearColorInput.value);
-            params.set('brd', borderColorInput.value);
-            params.set('bg', bgColorInput.value);
-            params.set('bld', isBold);
-            params.set('itl', isItalic);
-
-            const finalUrl = baseUrl + '?' + params.toString();
-            
-            const copyInput = document.getElementById('copy-input');
-            copyInput.value = finalUrl;
-            copyInput.select();
-            document.execCommand('copy');
-
-            okBtnText.innerText = "Pronto! 👍";
-            setTimeout(() => {
-                okBtnText.innerText = "OK";
-                panel.style.display = 'none';
-            }, 1000);
-        }
-
-        function togglePanel(event) {
-            event.stopPropagation();
-            panel.style.display = (panel.style.display === 'flex') ? 'none' : 'flex';
-        }
-
-        function closePanel(event) {
-            if (event) event.stopPropagation();
-            generateAndCopyLink();
-        }
-
-        function changeFont(val) { 
-            if(val === 'original') {
-                setOriginalFonts();
-            } else {
-                yearOutput.style.fontFamily = val;
-                monthOutput.style.fontFamily = val;
-                dayOutput.style.fontFamily = val;
-            }
-        }
-        
-        function changeSize() { applySizes(); }
-        function changeDayColor(val) { dayOutput.style.color = val; }
-        function changeMonthColor(val) { monthOutput.style.color = val; }
-        function changeYearColor(val) { yearOutput.style.color = val; }
-        function changeBorderColor(val) { innerBg.style.borderColor = val; }
-        function changeBgColor(val) { mainContainer.style.backgroundColor = val; innerBg.style.backgroundColor = val; panel.style.backgroundColor = val; }
-
-        function toggleBold() {
-            isBold = !isBold;
-            dateCard.style.fontWeight = isBold ? 'bold' : 'normal';
-            document.getElementById('btn-bold').classList.toggle('active', isBold);
-        }
-
-        function toggleItalic() {
-            isItalic = !isItalic;
-            dateCard.style.fontStyle = isItalic ? 'italic' : 'normal';
-            document.getElementById('btn-italic').classList.toggle('active', isItalic);
-        }
-
-        function setNormal() {
-            isBold = false; isItalic = false;
-            dateCard.style.fontWeight = 'normal';
-            dateCard.style.fontStyle = 'normal';
-            document.getElementById('btn-bold').classList.remove('active');
-            document.getElementById('btn-italic').classList.remove('active');
-        }
-
-        function rgbToHex(rgb) {
-            if (!rgb || rgb.indexOf('rgb') === -1) return rgb;
-            const rgbValues = rgb.match(/\d+/g);
-            const r = parseInt(rgbValues[0]).toString(16).padStart(2, '0');
-            const g = parseInt(rgbValues[1]).toString(16).padStart(2, '0');
-            const b = parseInt(rgbValues[2]).toString(16).padStart(2, '0');
-            return `#${r}${g}${b}`;
-        }
-
-        document.addEventListener('click', function(event) {
-            if (panel.style.display === 'flex') panel.style.display = 'none';
-        });
-
-        window.onload = loadUrlSettings;
-    </script>
-</body>
-</html>
+                            <input type="color" id="month-color-input" value="#e
