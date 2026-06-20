@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Pink Candy - data diária</title>
+    <title>Pink Candy - Custom Colors Daily Card</title>
     
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -26,37 +26,39 @@
             overflow: hidden;
         }
 
-        /* 1ª BORDA: Externa */
+        /* CONTAINER EXTERNO: Borda de fora (Cor clara/Fundo) */
         .calendar-container {
-            background-color: #e57399; 
+            background-color: #fff5f7; /* Cor de fundo/borda externa */
             border-radius: 20px;
-            padding: 5px; 
+            padding: 6px; /* Espessura da borda externa */
             width: 100%;
             height: 100%;
             max-width: 100%;
             max-height: 100%;
-            box-shadow: 0 10px 15px -3px rgba(229, 115, 153, 0.2), 0 4px 6px -4px rgba(229, 115, 153, 0.2);
+            box-shadow: 0 8px 16px -4px rgba(229, 115, 153, 0.15);
             position: relative;
             display: flex;
             justify-content: center;
             align-items: center;
         }
 
-        /* 2ª BORDA / FUNDO INTERNO */
+        /* CONTAINER INTERNO: Borda de dentro (Cor Escura) + Área do Conteúdo */
         .inner-container {
-            background-color: #fff5f7; 
+            background-color: #fff5f7; /* Cor interna onde fica o texto */
+            border: 4px solid #e57399; /* Borda escura interna instalada aqui */
             border-radius: 15px; 
             width: 100%;
             height: 100%;
-            padding: 10px;
+            padding: 5px;
             display: flex;
             flex-direction: column;
             justify-content: center;
             align-items: center;
             text-align: center;
+            overflow: hidden;
         }
 
-        /* Estrela menor de 13px */
+        /* Estrela de Configurações posicionada de forma discreta */
         .icon-menu {
             position: absolute;
             top: 12px;
@@ -72,53 +74,55 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            opacity: 0.5;
+            opacity: 0.3;
             transition: opacity 0.2s, transform 0.2s;
         }
 
         .icon-btn svg {
             fill: #e57399; 
-            width: 13px;
-            height: 13px;
+            width: 14px;
+            height: 14px;
         }
 
         .icon-btn:hover { opacity: 1; transform: scale(1.1); }
 
-        /* Estrutura do Texto */
+        /* Estrutura do Texto Compacta */
         .date-card {
             display: flex;
             flex-direction: column;
             justify-content: center;
             align-items: center;
             width: 100%;
+            white-space: nowrap; /* Impede quebras feias de texto ao reduzir a largura */
         }
 
         .date-year {
             font-family: "Sour Gummy", sans-serif;
-            font-size: 16px;
+            font-size: 14px;
             font-weight: 500;
-            letter-spacing: 2px;
-            margin: 0 0 2px 0;
-          line-height: 0.5;
-            color: #f3a0bb; /* Cor padrão inicial do ano */
+            letter-spacing: 1px;
+            margin: 0;
+            color: #f3a0bb;
+            line-height: 1.1;
         }
 
         .date-month {
             font-family: "Gaegu", cursive;
-            font-size: 26px;
+            font-size: 22px;
             font-weight: 700;
             text-transform: lowercase;
-            margin: 0 0 4px 0;
-            color: #e57399; /* Cor padrão inicial do mês */
+            margin: 1px 0;
+            color: #e57399;
+            line-height: 1.1;
         }
 
         .date-day {
             font-family: "Sour Gummy", sans-serif;
-            font-size: 64px; 
+            font-size: 54px; 
             font-weight: 800;
-            line-height: 0.6;
+            line-height: 0.85;
             margin: 0;
-            color: #e57399; /* Cor padrão inicial do dia */
+            color: #e57399;
         }
 
         /* Painel de Configurações Dinâmico */
@@ -171,7 +175,6 @@
 
         .settings-panel select { cursor: pointer; }
         
-        /* Ajustes dos grids de cores */
         .colors-container {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(65px, 1fr));
@@ -320,7 +323,7 @@
                             <input type="color" id="year-color-input" value="#f3a0bb" onchange="changeYearColor(this.value)">
                         </div>
                         <div class="color-group">
-                            <span class="color-label">Borda Ext.</span>
+                            <span class="color-label">Borda Int.</span>
                             <input type="color" id="border-color-input" value="#e57399" onchange="changeBorderColor(this.value)">
                         </div>
                         <div class="color-group">
@@ -402,12 +405,12 @@
             if (params.has('dsz')) daySizeSelect.value = params.get('dsz');
             applySizes();
             
-            // Carregamento das cores individuais da URL
             if (params.has('cDay')) dayOutput.style.color = params.get('cDay');
             if (params.has('cMon')) monthOutput.style.color = params.get('cMon');
             if (params.has('cYr')) yearOutput.style.color = params.get('cYr');
-            if (params.has('brd')) mainContainer.style.backgroundColor = params.get('brd');
+            if (params.has('brd')) innerBg.style.borderColor = params.get('brd');
             if (params.has('bg')) {
+                mainContainer.style.backgroundColor = params.get('bg');
                 innerBg.style.backgroundColor = params.get('bg');
                 panel.style.backgroundColor = params.get('bg');
             }
@@ -421,11 +424,10 @@
                 dateCard.style.fontStyle = isItalic ? 'italic' : 'normal';
             }
 
-            // Atualiza os seletores de cores visuais do painel
             dayColorInput.value = rgbToHex(dayOutput.style.color) || "#e57399";
             monthColorInput.value = rgbToHex(monthOutput.style.color) || "#e57399";
             yearColorInput.value = rgbToHex(yearOutput.style.color) || "#f3a0bb";
-            borderColorInput.value = rgbToHex(mainContainer.style.backgroundColor) || "#e57399";
+            borderColorInput.value = rgbToHex(innerBg.style.borderColor) || "#e57399";
             bgColorInput.value = rgbToHex(innerBg.style.backgroundColor) || "#fff5f7";
             
             document.getElementById('btn-bold').classList.toggle('active', isBold);
@@ -441,11 +443,11 @@
 
         function applySizes() {
             const baseSize = parseInt(sizeSelect.value);
-            yearOutput.style.fontSize = (baseSize * 0.75) + 'px';
-            monthOutput.style.fontSize = (baseSize * 1.15) + 'px';
+            yearOutput.style.fontSize = (baseSize * 0.70) + 'px';
+            monthOutput.style.fontSize = (baseSize * 1.05) + 'px';
             
             if(daySizeSelect.value === 'auto') {
-                dayOutput.style.fontSize = (baseSize * 2.9) + 'px';
+                dayOutput.style.fontSize = (baseSize * 2.5) + 'px';
             } else {
                 dayOutput.style.fontSize = daySizeSelect.value;
             }
@@ -502,12 +504,11 @@
         
         function changeSize() { applySizes(); }
         
-        // Funções de alteração de cores individuais
         function changeDayColor(val) { dayOutput.style.color = val; }
         function changeMonthColor(val) { monthOutput.style.color = val; }
         function changeYearColor(val) { yearOutput.style.color = val; }
-        function changeBorderColor(val) { mainContainer.style.backgroundColor = val; }
-        function changeBgColor(val) { innerBg.style.backgroundColor = val; panel.style.backgroundColor = val; }
+        function changeBorderColor(val) { innerBg.style.borderColor = val; }
+        function changeBgColor(val) { mainContainer.style.backgroundColor = val; innerBg.style.backgroundColor = val; panel.style.backgroundColor = val; }
 
         function toggleBold() {
             isBold = !isBold;
