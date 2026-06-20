@@ -45,7 +45,7 @@
         /* CONTAINER INTERNO: Borda de dentro (Cor Escura) + Área do Conteúdo */
         .inner-container {
             background-color: #fff5f7; /* Cor interna onde fica o texto */
-            border: 2px solid #e57399; /* Borda escura interna instalada aqui */
+            border: 4px solid #e57399; /* Borda escura interna instalada aqui */
             border-radius: 15px; 
             width: 100%;
             height: 100%;
@@ -79,9 +79,10 @@
         }
 
         .icon-btn svg {
-            fill: #a98490; 
-            width: 13px;
-            height: 13px;
+            fill: #e57399; 
+            width: 14px;
+            height: 14px;
+            transition: fill 0.2s;
         }
 
         .icon-btn:hover { opacity: 1; transform: scale(1.1); }
@@ -177,7 +178,7 @@
         
         .colors-container {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(65px, 1fr));
+            grid-template-columns: repeat(auto-fit, minmax(55px, 1fr));
             gap: 6px;
             width: 100%;
         }
@@ -236,7 +237,7 @@
             <div class="icon-menu">
                 <button class="icon-btn" onclick="togglePanel(event)" title="Configurações">
                     <svg viewBox="0 0 24 24">
-                        <path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/>
+                        <path id="star-icon" d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/>
                     </svg>
                 </button>
             </div>
@@ -309,6 +310,23 @@
                 </div>
 
                 <div class="settings-row">
+                    <div class="settings-label-block">
+                        <span>Borda Escura</span>
+                        <select id="border-width-select" onchange="changeBorderWidth(this.value)">
+                            <option value="0px">Sem borda</option>
+                            <option value="1px">1px</option>
+                            <option value="2px">2px</option>
+                            <option value="3px">3px</option>
+                            <option value="4px" selected>4px (Padrão)</option>
+                            <option value="5px">5px</option>
+                            <option value="6px">6px</option>
+                            <option value="8px">8px</option>
+                            <option value="10px">10px</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="settings-row">
                     <div class="colors-container">
                         <div class="color-group">
                             <span class="color-label">Cor Dia</span>
@@ -329,6 +347,10 @@
                         <div class="color-group">
                             <span class="color-label">Fundo Int.</span>
                             <input type="color" id="bg-color-input" value="#fff5f7" onchange="changeBgColor(this.value)">
+                        </div>
+                        <div class="color-group">
+                            <span class="color-label">Cor Ícone</span>
+                            <input type="color" id="icon-color-input" value="#e57399" onchange="changeIconColor(this.value)">
                         </div>
                     </div>
                 </div>
@@ -359,16 +381,19 @@
         const yearOutput = document.getElementById('year-output');
         const monthOutput = document.getElementById('month-output');
         const dayOutput = document.getElementById('day-output');
+        const starIcon = document.getElementById('star-icon');
 
         const fontSelect = document.getElementById('font-select');
         const sizeSelect = document.getElementById('size-select');
         const daySizeSelect = document.getElementById('day-size-select');
+        const borderWidthSelect = document.getElementById('border-width-select');
         
         const dayColorInput = document.getElementById('day-color-input');
         const monthColorInput = document.getElementById('month-color-input');
         const yearColorInput = document.getElementById('year-color-input');
         const borderColorInput = document.getElementById('border-color-input');
         const bgColorInput = document.getElementById('bg-color-input');
+        const iconColorInput = document.getElementById('icon-color-input');
         const okBtnText = document.getElementById('ok-btn-text');
 
         let isBold = false;
@@ -403,12 +428,17 @@
             
             if (params.has('sz')) sizeSelect.value = params.get('sz');
             if (params.has('dsz')) daySizeSelect.value = params.get('dsz');
+            if (params.has('brdW')) {
+                borderWidthSelect.value = params.get('brdW');
+                innerBg.style.borderWidth = params.get('brdW');
+            }
             applySizes();
             
             if (params.has('cDay')) dayOutput.style.color = params.get('cDay');
             if (params.has('cMon')) monthOutput.style.color = params.get('cMon');
             if (params.has('cYr')) yearOutput.style.color = params.get('cYr');
             if (params.has('brd')) innerBg.style.borderColor = params.get('brd');
+            if (params.has('cIco')) starIcon.style.fill = params.get('cIco');
             if (params.has('bg')) {
                 mainContainer.style.backgroundColor = params.get('bg');
                 innerBg.style.backgroundColor = params.get('bg');
@@ -429,6 +459,7 @@
             yearColorInput.value = rgbToHex(yearOutput.style.color) || "#f3a0bb";
             borderColorInput.value = rgbToHex(innerBg.style.borderColor) || "#e57399";
             bgColorInput.value = rgbToHex(innerBg.style.backgroundColor) || "#fff5f7";
+            iconColorInput.value = rgbToHex(starIcon.style.fill) || "#e57399";
             
             document.getElementById('btn-bold').classList.toggle('active', isBold);
             document.getElementById('btn-italic').classList.toggle('active', isItalic);
@@ -460,11 +491,13 @@
             params.set('fnt', fontSelect.value);
             params.set('sz', sizeSelect.value);
             params.set('dsz', daySizeSelect.value);
+            params.set('brdW', borderWidthSelect.value);
             params.set('cDay', dayColorInput.value);
             params.set('cMon', monthColorInput.value);
             params.set('cYr', yearColorInput.value);
             params.set('brd', borderColorInput.value);
             params.set('bg', bgColorInput.value);
+            params.set('cIco', iconColorInput.value);
             params.set('bld', isBold);
             params.set('itl', isItalic);
 
@@ -503,11 +536,13 @@
         }
         
         function changeSize() { applySizes(); }
+        function changeBorderWidth(val) { innerBg.style.borderWidth = val; }
         
         function changeDayColor(val) { dayOutput.style.color = val; }
         function changeMonthColor(val) { monthOutput.style.color = val; }
         function changeYearColor(val) { yearOutput.style.color = val; }
         function changeBorderColor(val) { innerBg.style.borderColor = val; }
+        function changeIconColor(val) { starIcon.style.fill = val; }
         function changeBgColor(val) { mainContainer.style.backgroundColor = val; innerBg.style.backgroundColor = val; panel.style.backgroundColor = val; }
 
         function toggleBold() {
