@@ -18,7 +18,7 @@
             background-color: transparent;
             margin: 0;
             padding: 0;
-            width: 100vw;
+            width: 100%;
             height: 100vh;
             display: flex;
             justify-content: center;
@@ -26,16 +26,15 @@
             overflow: hidden;
         }
 
-        /* CONTAINER EXTERNO: Borda Externa Clara + Força o aspecto 1:1 (Quadrado) */
+        /* CONTAINER EXTERNO: Borda de fora (Cor clara/Fundo) */
         .calendar-container {
-            background-color: #fff5f7; 
+            background-color: #fff5f7; /* Cor de fundo/borda externa */
             border-radius: 20px;
-            padding: 4px; 
+            padding: 6px; /* Espessura da borda externa */
             width: 100%;
             height: 100%;
-            max-width: 100vw;
-            max-height: 100vh;
-            aspect-ratio: 1 / 1; 
+            max-width: 100%;
+            max-height: 100%;
             box-shadow: 0 8px 16px -4px rgba(229, 115, 153, 0.15);
             position: relative;
             display: flex;
@@ -43,14 +42,14 @@
             align-items: center;
         }
 
-        /* CONTAINER INTERNO: Borda Escura Interna */
+        /* CONTAINER INTERNO: Borda de dentro (Cor Escura) + Área do Conteúdo */
         .inner-container {
-            background-color: #fff5f7; 
-            border: 4px solid #e57399; 
-            border-radius: 16px; 
+            background-color: #fff5f7; /* Cor interna onde fica o texto */
+            border: 4px solid #e57399; /* Borda escura interna instalada aqui */
+            border-radius: 15px; 
             width: 100%;
             height: 100%;
-            padding: 4px;
+            padding: 5px;
             display: flex;
             flex-direction: column;
             justify-content: center;
@@ -59,11 +58,11 @@
             overflow: hidden;
         }
 
-        /* Ícone de configurações */
+        /* Estrela de Configurações posicionada de forma discreta */
         .icon-menu {
             position: absolute;
-            top: 8px;
-            left: 8px;
+            top: 12px;
+            left: 12px;
             z-index: 10;
         }
 
@@ -75,32 +74,31 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            opacity: 0.15;
-            transition: opacity 0.2s;
+            opacity: 0.3;
+            transition: opacity 0.2s, transform 0.2s;
         }
 
         .icon-btn svg {
             fill: #e57399; 
-            width: 12px;
-            height: 12px;
+            width: 14px;
+            height: 14px;
         }
 
-        .icon-btn:hover { opacity: 1; }
+        .icon-btn:hover { opacity: 1; transform: scale(1.1); }
 
-        /* Estrutura de Texto Responsiva Dinâmica Baseada em vmin */
+        /* Estrutura do Texto Compacta */
         .date-card {
             display: flex;
             flex-direction: column;
             justify-content: center;
             align-items: center;
             width: 100%;
-            height: 100%;
-            white-space: nowrap;
+            white-space: nowrap; /* Impede quebras feias de texto ao reduzir a largura */
         }
 
         .date-year {
             font-family: "Sour Gummy", sans-serif;
-            font-size: clamp(10px, 6vmin, 18px);
+            font-size: 14px;
             font-weight: 500;
             letter-spacing: 1px;
             margin: 0;
@@ -110,7 +108,7 @@
 
         .date-month {
             font-family: "Gaegu", cursive;
-            font-size: clamp(13px, 9vmin, 26px);
+            font-size: 22px;
             font-weight: 700;
             text-transform: lowercase;
             margin: 1px 0;
@@ -120,35 +118,36 @@
 
         .date-day {
             font-family: "Sour Gummy", sans-serif;
-            font-size: clamp(26px, 24vmin, 70px); 
+            font-size: 54px; 
             font-weight: 800;
             line-height: 0.85;
             margin: 0;
             color: #e57399;
         }
 
-        /* Painel de Configurações */
+        /* Painel de Configurações Dinâmico */
         .settings-panel {
             display: none; 
             background-color: #fff5f7;
             border-radius: 12px;
-            padding: 10px;
+            padding: 12px;
             border: 2px solid #e57399;
             position: absolute;
-            bottom: 4px;
-            left: 4px;
-            right: 4px;
+            bottom: 5px;
+            left: 5px;
+            right: 5px;
             max-height: 95%;
             overflow-y: auto;
             flex-direction: column;
-            gap: 6px;
+            gap: 8px;
             z-index: 20;
             box-shadow: 0px 4px 15px rgba(229, 115, 153, 0.2);
+            animation: fadeIn 0.15s ease-in-out;
         }
 
         .settings-row {
             display: flex;
-            gap: 4px;
+            gap: 6px;
             align-items: center;
             justify-content: space-between;
             flex-wrap: wrap;
@@ -157,8 +156,8 @@
         .settings-label-block {
             display: flex;
             flex-direction: column;
-            gap: 1px;
-            font-size: 10px;
+            gap: 2px;
+            font-size: 11px;
             color: #e57399;
             flex-grow: 1;
         }
@@ -166,36 +165,42 @@
         .settings-panel select, .settings-panel input[type="color"] {
             background-color: #fff;
             border: 1px solid #f3a0bb;
-            border-radius: 5px;
-            padding: 3px;
-            font-size: 10px;
+            border-radius: 6px;
+            padding: 4px;
+            font-size: 11px;
             color: #e57399;
             outline: none;
             width: 100%;
         }
+
+        .settings-panel select { cursor: pointer; }
         
         .colors-container {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(50px, 1fr));
-            gap: 4px;
+            grid-template-columns: repeat(auto-fit, minmax(65px, 1fr));
+            gap: 6px;
             width: 100%;
         }
         .color-group {
             display: flex;
             flex-direction: column;
             align-items: center;
-            gap: 1px;
+            gap: 2px;
         }
-        .color-label { font-size: 9px; color: #e57399; text-align: center;}
-        .settings-panel input[type="color"] { padding: 1px; height: 22px; cursor: pointer; }
+        .color-label { 
+            font-size: 10px; 
+            color: #e57399; 
+            text-align: center;
+        }
+        .settings-panel input[type="color"] { padding: 1px; height: 26px; cursor: pointer; }
         
-        .style-btn-group { display: flex; gap: 3px; }
+        .style-btn-group { display: flex; gap: 4px; }
         .style-btn {
             background-color: #fff;
             border: 1px solid #f3a0bb;
-            border-radius: 5px;
-            padding: 3px 6px;
-            font-size: 10px;
+            border-radius: 6px;
+            padding: 4px 8px;
+            font-size: 11px;
             cursor: pointer;
             font-weight: bold;
             color: #e57399;
@@ -206,14 +211,21 @@
             background-color: #e57399;
             color: white;
             border: none;
-            border-radius: 5px;
-            padding: 4px 10px;
-            font-size: 10px;
+            border-radius: 6px;
+            padding: 6px 14px;
+            font-size: 11px;
             font-weight: bold;
             cursor: pointer;
+            transition: background-color 0.2s;
         }
+        .ok-btn:hover { background-color: #cc5a80; }
 
         #copy-input { position: absolute; left: -9999px; }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(3px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
     </style>
 </head>
 <body>
@@ -236,11 +248,12 @@
             </div>
 
             <div class="settings-panel" id="settings" onclick="event.stopPropagation()">
+                
                 <div class="settings-row">
                     <div class="settings-label-block" style="flex-grow: 2;">
                         <span>Fonte</span>
                         <select id="font-select" onchange="changeFont(this.value)">
-                            <option value="original">Original (Pink Mix)</option>
+                            <option value="original">Estilo Original (Pink Mix)</option>
                             <option value="'Gaegu', cursive">Gaegu</option>
                             <option value="'Sour Gummy', sans-serif">Sour Gummy</option>
                             <option value="'Playfair Display', serif">Playfair Display</option>
@@ -262,13 +275,35 @@
                             <option value="'Poppins', sans-serif">Poppins</option>
                         </select>
                     </div>
+
                     <div class="settings-label-block">
-                        <span>Multiplicador</span>
+                        <span>Tam. Geral</span>
                         <select id="size-select" onchange="changeSize()">
-                            <option value="0.7">Micro</option>
-                            <option value="0.85">Pequeno</option>
-                            <option value="1.0" selected>Padrão</option>
-                            <option value="1.2">Grande</option>
+                            <option value="10px">Micro</option>
+                            <option value="12px">Mini</option>
+                            <option value="15px">Pequeno</option>
+                            <option value="18px">Médio</option>
+                            <option value="22px" selected>Padrão</option>
+                            <option value="26px">Intermediário</option>
+                            <option value="30px">Grande</option>
+                            <option value="36px">Extra G.</option>
+                            <option value="42px">Super G.</option>
+                            <option value="48px">Megalodonte</option>
+                        </select>
+                    </div>
+
+                    <div class="settings-label-block">
+                        <span>Tam. Dia</span>
+                        <select id="day-size-select" onchange="changeSize()">
+                            <option value="auto" selected>Proporcional</option>
+                            <option value="30px">30px</option>
+                            <option value="40px">40px</option>
+                            <option value="50px">50px</option>
+                            <option value="64px">64px</option>
+                            <option value="75px">75px</option>
+                            <option value="90px">90px</option>
+                            <option value="110px">110px</option>
+                            <option value="130px">130px</option>
                         </select>
                     </div>
                 </div>
@@ -276,15 +311,15 @@
                 <div class="settings-row">
                     <div class="colors-container">
                         <div class="color-group">
-                            <span class="color-label">Dia</span>
+                            <span class="color-label">Cor Dia</span>
                             <input type="color" id="day-color-input" value="#e57399" onchange="changeDayColor(this.value)">
                         </div>
                         <div class="color-group">
-                            <span class="color-label">Mês</span>
+                            <span class="color-label">Cor Mês</span>
                             <input type="color" id="month-color-input" value="#e57399" onchange="changeMonthColor(this.value)">
                         </div>
                         <div class="color-group">
-                            <span class="color-label">Ano</span>
+                            <span class="color-label">Cor Ano</span>
                             <input type="color" id="year-color-input" value="#f3a0bb" onchange="changeYearColor(this.value)">
                         </div>
                         <div class="color-group">
@@ -292,17 +327,19 @@
                             <input type="color" id="border-color-input" value="#e57399" onchange="changeBorderColor(this.value)">
                         </div>
                         <div class="color-group">
-                            <span class="color-label">Fundo</span>
+                            <span class="color-label">Fundo Int.</span>
                             <input type="color" id="bg-color-input" value="#fff5f7" onchange="changeBgColor(this.value)">
                         </div>
                     </div>
                 </div>
 
                 <div class="settings-row" style="margin-top: 2px;">
-                    <div class="style-btn-group">
-                        <button class="style-btn" id="btn-bold" onclick="toggleBold()">B</button>
-                        <button class="style-btn" id="btn-italic" onclick="toggleItalic()">I</button>
-                        <button class="style-btn" id="btn-normal" onclick="setNormal()">N</button>
+                    <div>
+                        <div class="style-btn-group">
+                            <button class="style-btn" id="btn-bold" onclick="toggleBold()">B</button>
+                            <button class="style-btn" id="btn-italic" onclick="toggleItalic()">I</button>
+                            <button class="style-btn" id="btn-normal" onclick="setNormal()">Normal</button>
+                        </div>
                     </div>
                     <button class="ok-btn" id="ok-btn-text" onclick="closePanel(event)">OK</button>
                 </div>
@@ -325,6 +362,7 @@
 
         const fontSelect = document.getElementById('font-select');
         const sizeSelect = document.getElementById('size-select');
+        const daySizeSelect = document.getElementById('day-size-select');
         
         const dayColorInput = document.getElementById('day-color-input');
         const monthColorInput = document.getElementById('month-color-input');
@@ -363,9 +401,8 @@
                 setOriginalFonts();
             }
             
-            if (params.has('sz')) {
-                sizeSelect.value = params.get('sz');
-            }
+            if (params.has('sz')) sizeSelect.value = params.get('sz');
+            if (params.has('dsz')) daySizeSelect.value = params.get('dsz');
             applySizes();
             
             if (params.has('cDay')) dayOutput.style.color = params.get('cDay');
@@ -405,10 +442,15 @@
         }
 
         function applySizes() {
-            const factor = parseFloat(sizeSelect.value);
-            yearOutput.style.fontSize = `calc(clamp(10px, 6vmin, 18px) * ${factor})`;
-            monthOutput.style.fontSize = `calc(clamp(13px, 9vmin, 26px) * ${factor})`;
-            dayOutput.style.fontSize = `calc(clamp(26px, 24vmin, 70px) * ${factor})`;
+            const baseSize = parseInt(sizeSelect.value);
+            yearOutput.style.fontSize = (baseSize * 0.70) + 'px';
+            monthOutput.style.fontSize = (baseSize * 1.05) + 'px';
+            
+            if(daySizeSelect.value === 'auto') {
+                dayOutput.style.fontSize = (baseSize * 2.5) + 'px';
+            } else {
+                dayOutput.style.fontSize = daySizeSelect.value;
+            }
         }
 
         function generateAndCopyLink() {
@@ -417,6 +459,7 @@
             
             params.set('fnt', fontSelect.value);
             params.set('sz', sizeSelect.value);
+            params.set('dsz', daySizeSelect.value);
             params.set('cDay', dayColorInput.value);
             params.set('cMon', monthColorInput.value);
             params.set('cYr', yearColorInput.value);
@@ -432,7 +475,7 @@
             copyInput.select();
             document.execCommand('copy');
 
-            okBtnText.innerText = "Pronto! 👍";
+            okBtnText.innerText = "Copiado! 👍";
             setTimeout(() => {
                 okBtnText.innerText = "OK";
                 panel.style.display = 'none';
@@ -460,6 +503,7 @@
         }
         
         function changeSize() { applySizes(); }
+        
         function changeDayColor(val) { dayOutput.style.color = val; }
         function changeMonthColor(val) { monthOutput.style.color = val; }
         function changeYearColor(val) { yearOutput.style.color = val; }
